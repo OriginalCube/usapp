@@ -4,7 +4,7 @@ import RegisterFormat from "./RegisterFormat";
 import axios from "axios";
 
 const Login = () => {
-  const api_url = "/api/v1/";
+  const api_url = "/api/v1/accounts/";
   const [hasAccount, setHasAccount] = React.useState(true);
   const [registerInput, setRegisterInput] = React.useState({
     firstname: "",

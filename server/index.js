@@ -1,5 +1,6 @@
+require("dotenv").config();
 const express = require("express"),
-  PORT = 5000,
+  PORT = process.env.PORT,
   app = express();
 app.get("/api/v1", (req, res) => {
   res.send("hello !!!!");
@@ -13,10 +14,6 @@ app.post("/api/v1/login", (req, res) => {
   res.send(data);
 });
 
-app.post("/api/v1/register", (req, res) => {
-  const data = req.body;
-  console.log(data);
-  res.send(data);
-});
+app.use("/api/v1/accounts", require("./routes/Database"));
 
 app.listen(PORT, () => console.log(`start listening on port : ${PORT}`));
