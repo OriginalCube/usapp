@@ -5,7 +5,9 @@ const express = require("express"),
 app.get("/api/v1", (req, res) => {
   res.send("hello !!!!");
 });
+const connectDb = require("./config/db");
 
+connectDb();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
