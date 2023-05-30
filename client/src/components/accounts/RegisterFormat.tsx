@@ -3,6 +3,7 @@ import React from "react";
 const RegisterFormat = (props: any) => {
   const formSubmit = (e: any) => {
     e.preventDefault();
+    props.onSubmit("register");
   };
 
   return (

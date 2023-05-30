@@ -1,8 +1,7 @@
-import React from "react";
-
 const LoginFormat = (props: any) => {
   const formSubmit = (e: any) => {
     e.preventDefault();
+    props.onSubmit("login");
   };
 
   return (
@@ -14,7 +13,7 @@ const LoginFormat = (props: any) => {
             value={props.loginInput.username}
             className="w-full p-2 h-3/6 outline-none border-2 border-gray-500 shadow-md"
             placeholder="Username"
-            type="email"
+            type="text"
           />
         </div>
         <div className="h-1/5 w-full flex justify-center items-center">
@@ -23,7 +22,7 @@ const LoginFormat = (props: any) => {
             value={props.loginInput.password}
             className="w-full p-2 h-3/6 outline-none border-2 border-gray-500 shadow-md"
             placeholder="Password"
-            type="email"
+            type="password"
           />
         </div>
         <div className="h-1/6 w-full flex justify-center items-center">
