@@ -1,30 +1,44 @@
 const db = require("../models/AccountModel");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const AccountModel = require("../models/AccountModel");
 
 const createAccount = async (req, res) => {
+  const { firstname, lastname, username, password, email, number, birthday } =
+    req.body;
   try {
-    const { email, username } = req.body;
-    const usernameExist = await db.findOne({ username });
-    const emailExist = await db.findOne({ email });
-    if (!usernameExist && !emailExist) {
-      const createAccount = await db.create(req.body);
-      res.status(200).json({ message: "Successfully Created Account!" });
+    const userExist = await db.findOne({ email });
+    if (userExist) {
+      res.json({ message: "Email is already in use!" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const userCreate = AccountModel.create({
+      firstname,
+      lastname,
+      username,
+      password: hashedPassword,
+      email,
+      number,
+      birthday,
+    });
+
+    if (user) {
+      res.status(201).json(userCreate);
     } else {
-      res.json({ message: "User already exist!" });
+      res.json({ message: "Invalid User Datas." });
     }
   } catch (err) {}
 };
 
 const loginAccount = async (req, res) => {
-  try {
-    const userExist = await db.findOne(req.body);
-    if (!userExist) {
-      console.log("does not exist");
-      res.json({ message: "User does not exist!" });
-    } else {
-      res.status(200).json({ message: "User does exist." });
-    }
-  } catch (err) {
-    console.log("db error");
+  const { username, password } = req.body;
+  const user = AccountModel.findOne({ username });
+  if (user) {
+    res.send("user exist!");
+  } else {
+    res.send("does not exist");
   }
 };
 
