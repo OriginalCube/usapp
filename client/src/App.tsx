@@ -13,6 +13,7 @@ function App() {
         <div className="h-auto" style={{ width: "85vw" }}>
           <Routes>
             <Route index element={<Main />} />
+            <Route path="profile" element={<Main />} />
             <Route path="login" element={<Login />} />
           </Routes>
         </div>

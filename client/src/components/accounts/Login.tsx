@@ -28,15 +28,21 @@ const Login = () => {
     setLoginInput({ ...loginInput, [ev]: e.target.value });
   };
 
-  const onSubmit = (e: string) => {
+  const onSubmit = async (e: string) => {
     if (e === "login") {
-      axios
-        .post(api_url + "login", loginInput)
-        .then((e) => console.log(e.data));
+      const onLogin = await axios.post(api_url + "login", loginInput);
+      try {
+        localStorage.setItem("usappToken", onLogin.data.token);
+      } catch (err) {
+        console.log(err);
+      }
     } else if (e === "register") {
-      axios
-        .post(api_url + "register", registerInput)
-        .then((e) => console.log(e.data));
+      const onRegister = await axios.post(api_url + "login", registerInput);
+      try {
+        localStorage.setItem("usappToken", onRegister.data.token);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

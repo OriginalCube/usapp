@@ -25,7 +25,9 @@ const createAccount = async (req, res) => {
     });
 
     if (user) {
-      res.status(201).json(userCreate);
+      res.status(201).json({
+        token: genJWT(user._id),
+      });
     } else {
       res.json({ message: "Invalid User Datas." });
     }
@@ -34,15 +36,29 @@ const createAccount = async (req, res) => {
 
 const loginAccount = async (req, res) => {
   const { username, password } = req.body;
-  const user = AccountModel.findOne({ username });
-  if (user) {
-    res.send("user exist!");
+  console.log(req.body);
+  const user = await AccountModel.findOne({ username });
+
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.json({
+      token: genJWT(user._id),
+    });
   } else {
-    res.send("does not exist");
+    res.json({ message: "Invalid credentials." });
   }
+};
+
+const profileDetails = async (req, res) => {
+  const { _id, username, email } = AccountModel.findById(req.user.id);
+  res.send("Succesfully loaded");
+};
+
+const genJWT = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 module.exports = {
   createAccount,
   loginAccount,
+  profileDetails,
 };
