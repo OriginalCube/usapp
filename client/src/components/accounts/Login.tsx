@@ -2,10 +2,12 @@ import React from "react";
 import LoginFormat from "./LoginFormat";
 import RegisterFormat from "./RegisterFormat";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const api_url = "/api/v1/accounts/";
   const [hasAccount, setHasAccount] = React.useState(true);
+  const navigate = useNavigate();
   const [registerInput, setRegisterInput] = React.useState({
     firstname: "",
     lastname: "",
@@ -32,14 +34,16 @@ const Login = () => {
     if (e === "login") {
       const onLogin = await axios.post(api_url + "login", loginInput);
       try {
-        localStorage.setItem("usappToken", onLogin.data.token);
+        console.log(onLogin);
+        localStorage.setItem("kitappToken", onLogin.data.token);
+        navigate("/chat");
       } catch (err) {
         console.log(err);
       }
     } else if (e === "register") {
       const onRegister = await axios.post(api_url + "login", registerInput);
       try {
-        localStorage.setItem("usappToken", onRegister.data.token);
+        localStorage.setItem("kitappToken", onRegister.data.token);
       } catch (err) {
         console.log(err);
       }

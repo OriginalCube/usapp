@@ -1,49 +1,54 @@
-const db = require("../models/AccountModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const AccountModel = require("../models/AccountModel");
 
 const createAccount = async (req, res) => {
+  const porfilePicture = ["profile1", "profile2", "profile3", "profile4"];
   const { firstname, lastname, username, password, email, number, birthday } =
     req.body;
   try {
-    const userExist = await db.findOne({ email });
+    const userExist = await AccountModel.findOne({ email });
     if (userExist) {
-      res.json({ message: "Email is already in use!" });
+      res.json({ message: "Account Already Exist!" });
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const userCreate = AccountModel.create({
+    const randomPicture = Math.floor(
+      Math.random() * (porfilePicture.length - 1)
+    );
+    const createUser = AccountModel.create({
       firstname,
       lastname,
       username,
+      picture: porfilePicture[randomPicture],
       password: hashedPassword,
       email,
       number,
       birthday,
     });
 
-    if (user) {
+    if (createUser) {
       res.status(201).json({
-        token: genJWT(user._id),
+        token: genJWT(createUser._id),
       });
     } else {
-      res.json({ message: "Invalid User Datas." });
+      res.json({ message: "Invalid User Data." });
     }
   } catch (err) {}
 };
 
 const loginAccount = async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
   const user = await AccountModel.findOne({ username });
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
-      token: genJWT(user._id),
-    });
-  } else {
+  try {
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.status(200).json({ token: genJWT(user._id) });
+    } else {
+      res.json({ message: "Invalid Credentials." });
+    }
+  } catch (err) {
     res.json({ message: "Invalid credentials." });
   }
 };
