@@ -16,9 +16,11 @@ const Navigation = () => {
               Profile
             </p>{" "}
           </Link>
-          <p className="font-normal text-2xl opacity-90 leading-loose tracking-thight">
-            Chat
-          </p>
+          <Link to="chat">
+            <p className="font-normal text-2xl opacity-90 leading-loose tracking-thight">
+              Chat
+            </p>{" "}
+          </Link>
         </div>
       </div>
     </div>

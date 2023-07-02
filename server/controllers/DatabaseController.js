@@ -41,7 +41,6 @@ const createAccount = async (req, res) => {
 const loginAccount = async (req, res) => {
   const { username, password } = req.body;
   const user = await AccountModel.findOne({ username });
-
   try {
     if (user && (await bcrypt.compare(password, user.password))) {
       res.status(200).json({ token: genJWT(user._id) });
@@ -49,17 +48,23 @@ const loginAccount = async (req, res) => {
       res.json({ message: "Invalid Credentials." });
     }
   } catch (err) {
+    console.log(err);
     res.json({ message: "Invalid credentials." });
   }
 };
 
 const profileDetails = async (req, res) => {
-  const { _id, username, email } = AccountModel.findById(req.user.id);
-  res.send("Succesfully loaded");
+  const userDetails = await AccountModel.findById(req.user.id);
+  const userDetail = {
+    username: userDetails.username,
+    picture: userDetails.picture,
+  };
+  console.log("Profile details");
+  res.json(userDetail);
 };
 
 const genJWT = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign({ id }, process.env.KITAPP_SECRET, { expiresIn: "30d" });
 };
 
 module.exports = {
