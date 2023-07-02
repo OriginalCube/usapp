@@ -1,5 +1,6 @@
 import React from "react";
 import io from "socket.io-client";
+import ChatBox from "./chat/ChatBox";
 
 const socket = io("http://localhost:5000/");
 const Chat = () => {
@@ -8,6 +9,12 @@ const Chat = () => {
   React.useEffect(() => {
     console.log(socket);
   }, []);
+
+  const onJoin = () => {
+    if (roomCode !== "") {
+      socket.emit("join_room", roomCode);
+    }
+  };
 
   return (
     <div className="h-full w-full text-black flex items-center justify-center">
@@ -23,6 +30,7 @@ const Chat = () => {
             value={roomCode}
           />
           <button
+            onClick={onJoin}
             className="border-2 border-gray-800 bg-gray-800 text-white rounded-md text-xl w-1/2 p-2 m-auto relative left-1/4 mt-4
           font-medium hover:text-gray-800 hover:bg-white "
           >
@@ -30,6 +38,7 @@ const Chat = () => {
           </button>
         </div>
       </div>
+      <ChatBox socket={socket} username={"Mitzu"} room={roomCode} />
     </div>
   );
 };

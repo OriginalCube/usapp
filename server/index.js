@@ -29,8 +29,9 @@ const mainServer = app.listen(PORT, () =>
 const io = require("socket.io")(mainServer, { cors: { origin: "*" } });
 io.on("connection", (socket) => {
   console.log(socket.id);
-  socket.on("join_room", () => {
-    socket.join();
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`user ${socket.id} join the room ${data}.`);
   });
   socket.on("disconnect", () => console.log("user disconnected"));
 });
