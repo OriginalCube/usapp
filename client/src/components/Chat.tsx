@@ -2,6 +2,7 @@ import React from "react";
 import io from "socket.io-client";
 import ChatBox from "./chat/ChatBox";
 import axios from "axios";
+import authCheck from "./auth";
 
 const socket = io("http://localhost:5000/");
 const Chat = (props: any) => {
@@ -23,8 +24,14 @@ const Chat = (props: any) => {
     setUserDetails(userDetail.data);
   };
 
+  const asy = async () => {
+    const data = await authCheck.authCheck();
+    console.log(data);
+  };
+
   React.useEffect(() => {
     console.log(socket);
+    asy();
     getDetails();
   }, []);
 

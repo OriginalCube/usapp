@@ -8,5 +8,9 @@ const authCheck = async () => {
       authorization: `Bearer ${localStorage.getItem("kitappToken")}`,
     },
   });
-  console.log(auth);
+  return auth;
 };
+
+const AuthService = { authCheck };
+
+export default AuthService;
