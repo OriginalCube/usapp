@@ -19,6 +19,7 @@ const Chat = (props: any) => {
         authorization: `Bearer ${localStorage.getItem("kitappToken")}`,
       },
     });
+    console.log(userDetail.data);
     setUserDetails(userDetail.data);
   };
 
