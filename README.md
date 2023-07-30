@@ -1,4 +1,4 @@
-# usapp
+# Usapp
 Chat App
 
 # A real-time messaging app allows users to create their own accounts and rooms with these accounts to talk with each other.
